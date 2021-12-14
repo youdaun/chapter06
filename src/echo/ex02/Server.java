@@ -1,4 +1,4 @@
-package echo.ex01;
+package echo.ex02;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,18 +36,29 @@ public class Server {
 		OutputStreamWriter isw = new OutputStreamWriter(os, "UTF-8");
 		BufferedWriter bw = new BufferedWriter(isw);
 				
-		//메세지 받기
-		String msg = br.readLine();
-		System.out.println("받은메세지:" + msg);
+		while(true) {
+			//메세지 받기
+			String msg = br.readLine();
+			
+			if(msg == null) {
+				System.out.println("클라이언트 종료키 입력");
+				break;
+			}
+			
+			System.out.println("받은메세지:" + msg);
+			
+			//메세지 보내기
+			bw.write(msg);
+			bw.newLine();
+			bw.flush();
+			
+		}
 		
-		//메세지 보내기
-		bw.write(msg);
-		bw.newLine();
-		bw.flush();
-		
+		System.out.println("================================");
+		System.out.println("<서버종료>");
+	
 		socket.close();
 		serverSocket.close();
-		
 	}
 
 }

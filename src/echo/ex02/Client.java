@@ -1,4 +1,4 @@
-package echo.ex01;
+package echo.ex02;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
 
@@ -35,16 +36,30 @@ public class Client {
 		InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 		BufferedReader br = new BufferedReader(isr);
 		
-		//메세지 보내기
-		String str = "안녕하세요";
-		bw.write(str);
-		bw.newLine();
-		bw.flush(); //가득찬걸로 생각하라는뜻 안해도 돌아감 혹시나를 위해 해준다(글자가 너무 적으면 안보내지는 경우가 생길수있다)
+		//Scanner (키보드 입력용)
+		Scanner sc = new Scanner(System.in);
 		
-		//메세지 받기
-		String reMsg = br.readLine();
-		System.out.println("server:[" + reMsg + "]");
+		//반복구간
+		while(true) {
+			String str = sc.nextLine();
+			
+			if("/q".equals(str)) { //str.equals와 같은건데 null point방지를 위해 이렇게 써줌
+				System.out.println("종료키 입력");
+				break;
+			}
+			
+			//메세지 보내기
+			bw.write(str);
+			bw.newLine();
+			bw.flush(); //가득찬걸로 생각하라는뜻 안해도 돌아감 혹시나를 위해 해준다(글자가 너무 적으면 안보내지는 경우가 생길수있다)
+			
+			//메세지 받기
+			String reMsg = br.readLine();
+			System.out.println("server:[" + reMsg + "]");
+		}
 		
+		System.out.println("[접속이 종료되었습니다.]");
+		sc.close();
 		bw.close();
 		socket.close();
 
